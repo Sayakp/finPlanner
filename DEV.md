@@ -4,9 +4,10 @@
 - Java 24 installed (for local builds)
 - Maven installed or using Maven Wrapper
 
-
 ### IDE Setup
+
 When developing locally, ensure your IDE is using the dev profile. Set the following environment variables:
+
 ```
 DB_PASSWORD=finplanner;
 DB_URL=jdbc:postgresql://localhost:5432/finplanner;
@@ -14,6 +15,7 @@ DB_USERNAME=finplanner
 ```
 
 ### DB creation for local development:
+
 ```bash
 podman run -d \
   --name finplanner-postgres \
@@ -25,17 +27,18 @@ podman run -d \
   postgres:17-alpine
 ```
 
-
 ## Containerized Build (Optional)
 
 If you want to build and run the application in a container using Podman:
 
 ### Build the Podman Image:
+
 ```bash
 podman build -t finplanner:latest .
 ```
 
 ### Run the container locally:
+
 ```bash
 podman run --rm -p 8080:8080 finplanner:latest
 ```
