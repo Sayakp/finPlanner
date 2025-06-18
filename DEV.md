@@ -12,7 +12,7 @@ When developing locally, ensure your IDE is using the dev profile. Set the follo
 DB_PASSWORD=finplanner;
 DB_URL=jdbc:postgresql://localhost:5432/finplanner;
 DB_USERNAME=finplanner
-JWT_SECRET={use the generated secret here}
+APP_JWT_SECRET={use the generated secret here}
 ```
 
 ### Generating a Secure JWT Secret
