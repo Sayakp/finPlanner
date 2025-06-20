@@ -16,8 +16,8 @@ public class RoleSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        for(UserRole role: UserRole.values()){
-            roleRepository.findByRole(role).orElseGet(()->{
+        for (UserRole role : UserRole.values()) {
+            roleRepository.findByRole(role).orElseGet(() -> {
                 Role newRole = new Role();
                 newRole.setRole(role);
                 return roleRepository.save(newRole);

@@ -54,10 +54,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public ResponseEntity<UserDto> registerUser(UserRegistrationDto registrationDto) {
-        if(userRepository.existsByUsername(registrationDto.getUsername())){
+        if (userRepository.existsByUsername(registrationDto.getUsername())) {
             throw new RegistrationValidationException(USERNAME_TAKEN);
         }
-        if(userRepository.existsByEmail(registrationDto.getEmail())){
+        if (userRepository.existsByEmail(registrationDto.getEmail())) {
             throw new RegistrationValidationException(EMAIL_IN_USE);
         }
         User user = userMapper.toUser(registrationDto);
@@ -95,13 +95,13 @@ public class AuthServiceImpl implements AuthService {
     public ResponseEntity<UserDto> refreshToken(HttpServletRequest request) {
         String refreshToken = jwtUtils.getJwtFromRefreshTokenCookie(request);
 
-        if(refreshToken == null || !jwtUtils.validateJwtToken(refreshToken)){
+        if (refreshToken == null || !jwtUtils.validateJwtToken(refreshToken)) {
             throw new TokenValidationException("Invalid or expired refresh token");
         }
 
         String username = jwtUtils.getUsernameFromJwtToken(refreshToken);
         User user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return generateTokenResponse(user);
     }

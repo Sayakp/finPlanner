@@ -17,27 +17,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
-public class UserController {
+public class AuthController {
     private final AuthService authService;
     private final JwtUtils jwtUtils;
 
-    public UserController(AuthService authService, JwtUtils jwtUtils) {
+    public AuthController(AuthService authService, JwtUtils jwtUtils) {
         this.authService = authService;
         this.jwtUtils = jwtUtils;
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserRegistrationDto userRegistrationDto){
+    public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
         return authService.registerUser(userRegistrationDto);
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<UserDto> signIn(@Valid @RequestBody AuthRequestDto authRequestDto){
+    public ResponseEntity<UserDto> signIn(@Valid @RequestBody AuthRequestDto authRequestDto) {
         return authService.authenticateUser(authRequestDto);
     }
 
     @PostMapping("/signout")
-    public ResponseEntity<?> signOut(){
+    public ResponseEntity<?> signOut() {
         ResponseCookie cleanAccessCookie = jwtUtils.getCleanAccessTokenCookie();
         ResponseCookie cleanRefreshToken = jwtUtils.getCleanRefreshTokenCookie();
 
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/refreshtoken")
-    public ResponseEntity<UserDto> refreshToken(HttpServletRequest request){
+    public ResponseEntity<UserDto> refreshToken(HttpServletRequest request) {
         return authService.refreshToken(request);
     }
 

@@ -18,6 +18,7 @@ APP_JWT_SECRET={use the generated secret here}
 ### Generating a Secure JWT Secret
 
 You can generate a secure 256-bit key using the following command:
+
 ```bash
 openssl rand -hex 32
 ```
