@@ -76,4 +76,8 @@ public class User {
     public void removeRole(Role role) {
         this.roles.remove(role);
     }
+
+    public boolean isAdmin() {
+        return roles.stream().anyMatch(role -> role.getRole() == UserRole.ADMIN);
+    }
 }

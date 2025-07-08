@@ -3,9 +3,11 @@ package com.finplanner.finplanner.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -34,6 +36,10 @@ public class Expense {
     @Column(nullable = false)
     @ToString.Include
     private LocalDate date;
+
+    @CreatedDate
+    @ToString.Include
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)

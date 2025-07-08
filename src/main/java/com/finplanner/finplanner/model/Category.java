@@ -24,12 +24,11 @@ public class Category {
     @ToString.Include
     private String name;
 
-    @Column()
     @ToString.Include
     private String description;
 
     // Categories without user will be considered global.
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }
