@@ -4,11 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
-public class CategoryDto {
-    private UUID id;
+public class CreateCategoryDto {
     @NotNull(message = "Name required")
     @Size(max = 100)
     private String name;

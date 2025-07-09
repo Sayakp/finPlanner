@@ -10,7 +10,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ExpenseMapper {
     Expense toExpense(ExpenseDto expenseDto);
+
     @Mapping(source = "category.name", target = "categoryName")
     ExpenseDto toExpenseDto(Expense expense);
+
     List<ExpenseDto> toExpenseDtoList(List<Expense> expenses);
 }

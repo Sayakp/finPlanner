@@ -1,15 +1,10 @@
 package com.finplanner.finplanner.dto.category;
 
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
-public class CategoryDto {
-    private UUID id;
-    @NotNull(message = "Name required")
+public class UpdateCategoryDto {
     @Size(max = 100)
     private String name;
     @Size(max = 255)

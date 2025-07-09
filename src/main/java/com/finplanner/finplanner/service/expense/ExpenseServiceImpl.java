@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ExpenseServiceImpl implements  ExpenseService {
+public class ExpenseServiceImpl implements ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final CategoryRepository categoryRepository;
     private final ExpenseMapper expenseMapper;
@@ -71,17 +71,17 @@ public class ExpenseServiceImpl implements  ExpenseService {
     public ExpenseDto patchExpense(UUID expenseId, PatchExpenseDto patchExpenseDto, User user) {
         Expense expenseToPatch = findAuthorizedExpense(expenseId, user);
 
-        if(patchExpenseDto.getAmount()!=null){
+        if (patchExpenseDto.getAmount() != null) {
             expenseToPatch.setAmount(patchExpenseDto.getAmount());
         }
-        if(patchExpenseDto.getCategoryId()!=null){
+        if (patchExpenseDto.getCategoryId() != null) {
             Category category = resolveAccessibleCategory(patchExpenseDto.getCategoryId(), user);
             expenseToPatch.setCategory(category);
         }
-        if(patchExpenseDto.getDate()!=null){
+        if (patchExpenseDto.getDate() != null) {
             expenseToPatch.setDate(patchExpenseDto.getDate());
         }
-        if(patchExpenseDto.getDescription()!=null){
+        if (patchExpenseDto.getDescription() != null) {
             expenseToPatch.setDescription(patchExpenseDto.getDescription());
         }
         expenseRepository.save(expenseToPatch);
@@ -97,9 +97,9 @@ public class ExpenseServiceImpl implements  ExpenseService {
     private Expense findAuthorizedExpense(UUID expenseId, User user) {
         return user.isAdmin()
                 ? expenseRepository.findById(expenseId).orElseThrow(
-                        ()-> new ResourceNotFoundException("Expense not found"))
+                () -> new ResourceNotFoundException("Expense not found"))
                 : expenseRepository.findByIdAndUserId(expenseId, user.getId()).orElseThrow(
-                        ()-> new ResourceNotFoundException("Expense not found or not authorized")
+                () -> new ResourceNotFoundException("Expense not found or not authorized")
         );
     }
 
