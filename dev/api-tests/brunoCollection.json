@@ -1,0 +1,367 @@
+{
+  "name": "finPlanner",
+  "version": "1",
+  "items": [
+    {
+      "type": "folder",
+      "name": "User",
+      "filename": "User",
+      "seq": 2,
+      "root": {
+        "meta": {
+          "name": "User",
+          "seq": 2
+        }
+      },
+      "items": [
+        {
+          "type": "http",
+          "name": "Register user",
+          "filename": "Register user.bru",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/api/auth/signup",
+            "method": "POST",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"TestPassword123*\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Login user",
+          "filename": "Login user.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/auth/signin",
+            "method": "POST",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"username\": \"testuser\",\n  \"password\": \"TestPassword123*\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": ""
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Logout user",
+          "filename": "Logout user.bru",
+          "seq": 3,
+          "request": {
+            "url": "http://localhost:8080/api/auth/signout",
+            "method": "POST",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": ""
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Category",
+      "filename": "Category",
+      "seq": 3,
+      "root": {
+        "meta": {
+          "name": "Category",
+          "seq": 3
+        }
+      },
+      "items": [
+        {
+          "type": "http",
+          "name": "Get categories",
+          "filename": "Get categories.bru",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/api/categories",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Create global category (admin only)",
+          "filename": "Create global category (admin only).bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/categories/global",
+            "method": "POST",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer",
+                "enabled": true
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Transport\",\n  \"description\": \"Shared\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Create category",
+          "filename": "Create category.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/categories",
+            "method": "POST",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer",
+                "enabled": true
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Food\",\n  \"description\": \"Groceries and restaurants\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update category",
+          "filename": "Update category.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/categories/",
+            "method": "PUT",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer",
+                "enabled": true
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Renamed\",\n  \"description\": \"New description\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Patch category",
+          "filename": "Patch category.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/categories/",
+            "method": "PATCH",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer",
+                "enabled": true
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"description\": \"Updated only this\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Delete category",
+          "filename": "Delete category.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/categories/",
+            "method": "DELETE",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "environments": [],
+  "brunoConfig": {
+    "version": "1",
+    "name": "finPlanner",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ],
+    "size": 0,
+    "filesCount": 0
+  }
+}

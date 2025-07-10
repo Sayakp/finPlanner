@@ -9,6 +9,7 @@ import com.finplanner.finplanner.mapper.CategoryMapper;
 import com.finplanner.finplanner.model.Category;
 import com.finplanner.finplanner.model.User;
 import com.finplanner.finplanner.repository.CategoryRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.toCategoryDto(category);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public CategoryDto createGlobalCategory(CreateCategoryDto categoryDto) {
         Category category = categoryMapper.toCategory(categoryDto);
