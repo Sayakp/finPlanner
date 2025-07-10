@@ -6,6 +6,7 @@ import com.finplanner.finplanner.dto.expense.PatchExpenseDto;
 import com.finplanner.finplanner.security.UserPrincipal;
 import com.finplanner.finplanner.service.expense.ExpenseService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,34 +23,40 @@ public class ExpenseController {
     }
 
     @GetMapping()
-    public List<ExpenseDto> getExpenses(@AuthenticationPrincipal UserPrincipal principal) {
-        return expenseService.getUserExpenses(principal.getUser());
+    public ResponseEntity<List<ExpenseDto>> getExpenses(@AuthenticationPrincipal UserPrincipal principal) {
+        List<ExpenseDto> expenses = expenseService.getUserExpenses(principal.getUser());
+        return ResponseEntity.ok(expenses);
     }
 
     @PostMapping()
-    public ExpenseDto createExpense(@RequestBody @Valid CreateExpenseDto createExpenseDto,
-                                    @AuthenticationPrincipal UserPrincipal principal) {
-        return expenseService.createExpense(createExpenseDto, principal.getUser());
+    public ResponseEntity<ExpenseDto> createExpense(@RequestBody @Valid CreateExpenseDto dto,
+                                                    @AuthenticationPrincipal UserPrincipal principal) {
+        ExpenseDto created = expenseService.createExpense(dto, principal.getUser());
+        return ResponseEntity.status(201).body(created);
     }
 
     @PutMapping("/{id}")
-    public ExpenseDto replaceExpense(@PathVariable UUID id,
-                                     @RequestBody @Valid CreateExpenseDto createExpenseDto,
-                                     @AuthenticationPrincipal UserPrincipal principal) {
-        return expenseService.replaceExpense(id, createExpenseDto, principal.getUser());
+    public ResponseEntity<ExpenseDto> replaceExpense(@PathVariable UUID id,
+                                                     @RequestBody @Valid CreateExpenseDto dto,
+                                                     @AuthenticationPrincipal UserPrincipal principal) {
+        ExpenseDto updated = expenseService.replaceExpense(id, dto, principal.getUser());
+        return ResponseEntity.ok(updated);
     }
 
     @PatchMapping("/{id}")
-    public ExpenseDto patchExpense(@PathVariable UUID id,
-                                   @RequestBody @Valid PatchExpenseDto patchExpenseDto,
-                                   @AuthenticationPrincipal UserPrincipal principal) {
-        return expenseService.patchExpense(id, patchExpenseDto, principal.getUser());
+    public ResponseEntity<ExpenseDto> patchExpense(@PathVariable UUID id,
+                                                   @RequestBody @Valid PatchExpenseDto dto,
+                                                   @AuthenticationPrincipal UserPrincipal principal) {
+        ExpenseDto updated = expenseService.patchExpense(id, dto, principal.getUser());
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteExpense(@PathVariable UUID id,
-                              @AuthenticationPrincipal UserPrincipal principal) {
+    public ResponseEntity<Void> deleteExpense(@PathVariable UUID id,
+                                              @AuthenticationPrincipal UserPrincipal principal) {
         expenseService.deleteExpense(id, principal.getUser());
+        return ResponseEntity.noContent().build();
     }
+
 
 }

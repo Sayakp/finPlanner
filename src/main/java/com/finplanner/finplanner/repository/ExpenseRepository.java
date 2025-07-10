@@ -9,5 +9,6 @@ import java.util.UUID;
 
 public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
     Optional<Expense> findByIdAndUserId(UUID id, UUID userId);
+
     List<Expense> findByUserId(UUID userId);
 }

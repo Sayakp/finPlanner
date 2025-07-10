@@ -1,12 +1,12 @@
 package com.finplanner.finplanner.dto.category;
 
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
-public class CategoryDto {
-    private UUID id;
+public class PatchCategoryDto {
+    @Size(max = 100)
     private String name;
+    @Size(max = 255)
     private String description;
 }
