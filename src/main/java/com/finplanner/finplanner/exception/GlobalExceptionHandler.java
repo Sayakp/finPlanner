@@ -48,4 +48,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(CategoryInUseException.class)
+    public ResponseEntity<String> handleCategoryInUseException(CategoryInUseException ex) {
+        logger.error(ex.getMessage(), ex);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
 }
