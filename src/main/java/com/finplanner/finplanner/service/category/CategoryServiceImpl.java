@@ -4,11 +4,13 @@ import com.finplanner.finplanner.dto.category.CategoryDto;
 import com.finplanner.finplanner.dto.category.CreateCategoryDto;
 import com.finplanner.finplanner.dto.category.PatchCategoryDto;
 import com.finplanner.finplanner.dto.category.UpdateCategoryDto;
+import com.finplanner.finplanner.exception.CategoryInUseException;
 import com.finplanner.finplanner.exception.ResourceNotFoundException;
 import com.finplanner.finplanner.mapper.CategoryMapper;
 import com.finplanner.finplanner.model.Category;
 import com.finplanner.finplanner.model.User;
 import com.finplanner.finplanner.repository.CategoryRepository;
+import com.finplanner.finplanner.repository.ExpenseRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +22,14 @@ import java.util.UUID;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+    private final ExpenseRepository expenseRepository;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository,
+                               CategoryMapper categoryMapper,
+                               ExpenseRepository expenseRepository) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
+        this.expenseRepository = expenseRepository;
     }
 
     @Override
@@ -68,6 +74,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void deleteCategory(UUID categoryId, User user) {
+        if(expenseRepository.existsByCategoryId(categoryId)) {
+            throw new CategoryInUseException("Cannot delete category with existing expenses");
+        }
         Category category = categoryRepository.findByIdAndUserId(categoryId, user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found or not accessible"));
         categoryRepository.delete(category);

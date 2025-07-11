@@ -9,6 +9,6 @@ import java.util.UUID;
 
 public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
     Optional<Expense> findByIdAndUserId(UUID id, UUID userId);
-
+    boolean existsByCategoryId(UUID categoryId);
     List<Expense> findByUserId(UUID userId);
 }

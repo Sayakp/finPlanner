@@ -4,23 +4,23 @@
   "items": [
     {
       "type": "folder",
-      "name": "User",
-      "filename": "User",
-      "seq": 2,
+      "name": "Category",
+      "filename": "Category",
+      "seq": 3,
       "root": {
         "meta": {
-          "name": "User",
-          "seq": 2
+          "name": "Category",
+          "seq": 3
         }
       },
       "items": [
         {
           "type": "http",
-          "name": "Register user",
-          "filename": "Register user.bru",
-          "seq": 1,
+          "name": "Create category",
+          "filename": "Create category.bru",
+          "seq": 2,
           "request": {
-            "url": "http://localhost:8080/api/auth/signup",
+            "url": "http://localhost:8080/api/categories",
             "method": "POST",
             "headers": [
               {
@@ -32,7 +32,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"TestPassword123*\"\n}",
+              "json": "{\n  \"name\": \"Food\",\n  \"description\": \"Groceries and restaurants\"\n}",
               "formUrlEncoded": [],
               "multipartForm": [],
               "file": []
@@ -47,6 +47,171 @@
             }
           }
         },
+        {
+          "type": "http",
+          "name": "Create global category (admin only)",
+          "filename": "Create global category (admin only).bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/categories/global",
+            "method": "POST",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Transport\",\n  \"description\": \"Shared\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Delete category",
+          "filename": "Delete category.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/categories/b4480e78-08b5-4db3-9bda-2ba5c9e6c16c",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get categories",
+          "filename": "Get categories.bru",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/api/categories",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Patch category",
+          "filename": "Patch category.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/categories/b4480e78-08b5-4db3-9bda-2ba5c9e6c16c",
+            "method": "PATCH",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"description\": \"Updated only this\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update category",
+          "filename": "Update category.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/categories/b4480e78-08b5-4db3-9bda-2ba5c9e6c16c",
+            "method": "PUT",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Renamed\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "User",
+      "filename": "User",
+      "seq": 2,
+      "root": {
+        "meta": {
+          "name": "User",
+          "seq": 2
+        }
+      },
+      "items": [
         {
           "type": "http",
           "name": "Login user",
@@ -118,36 +283,63 @@
               }
             }
           }
+        },
+        {
+          "type": "http",
+          "name": "Register user",
+          "filename": "Register user.bru",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/api/auth/signup",
+            "method": "POST",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"TestPassword123*\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
         }
       ]
     },
     {
       "type": "folder",
-      "name": "Category",
-      "filename": "Category",
+      "name": "Expense",
+      "filename": "Expense",
       "seq": 3,
       "root": {
         "meta": {
-          "name": "Category",
+          "name": "Expense",
           "seq": 3
         }
       },
       "items": [
         {
           "type": "http",
-          "name": "Get categories",
-          "filename": "Get categories.bru",
+          "name": "Get expenses",
+          "filename": "Get expenses.bru",
           "seq": 1,
           "request": {
-            "url": "http://localhost:8080/api/categories",
+            "url": "http://localhost:8080/api/expenses",
             "method": "GET",
-            "headers": [
-              {
-                "name": "Authorization",
-                "value": "Bearer",
-                "enabled": true
-              }
-            ],
+            "headers": [],
             "params": [],
             "body": {
               "mode": "none",
@@ -167,18 +359,13 @@
         },
         {
           "type": "http",
-          "name": "Create global category (admin only)",
-          "filename": "Create global category (admin only).bru",
+          "name": "Create expense",
+          "filename": "Create expense.bru",
           "seq": 2,
           "request": {
-            "url": "http://localhost:8080/api/categories/global",
+            "url": "http://localhost:8080/api/expenses",
             "method": "POST",
             "headers": [
-              {
-                "name": "Authorization",
-                "value": "Bearer",
-                "enabled": true
-              },
               {
                 "name": "Content-Type",
                 "value": "application/json",
@@ -188,7 +375,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"name\": \"Transport\",\n  \"description\": \"Shared\"\n}",
+              "json": "{\n  \"amount\": 95000,\n  \"description\": \"Lunch and transport\",\n  \"date\": \"2025-07-09\",\n  \"categoryId\": \"831fe2f2-38f0-4ede-aee5-d2c9cdfc4ceb\"\n}",
               "formUrlEncoded": [],
               "multipartForm": [],
               "file": []
@@ -205,57 +392,14 @@
         },
         {
           "type": "http",
-          "name": "Create category",
-          "filename": "Create category.bru",
-          "seq": 2,
+          "name": "Replace expense",
+          "filename": "Replace expense.bru",
+          "seq": 3,
           "request": {
-            "url": "http://localhost:8080/api/categories",
-            "method": "POST",
-            "headers": [
-              {
-                "name": "Authorization",
-                "value": "Bearer",
-                "enabled": true
-              },
-              {
-                "name": "Content-Type",
-                "value": "application/json",
-                "enabled": true
-              }
-            ],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{\n  \"name\": \"Food\",\n  \"description\": \"Groceries and restaurants\"\n}",
-              "formUrlEncoded": [],
-              "multipartForm": [],
-              "file": []
-            },
-            "script": {},
-            "vars": {},
-            "assertions": [],
-            "tests": "",
-            "docs": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "Update category",
-          "filename": "Update category.bru",
-          "seq": 2,
-          "request": {
-            "url": "http://localhost:8080/api/categories/",
+            "url": "http://localhost:8080/api/expenses/a58f71de-5d5e-40d5-b61d-807be808cb89",
             "method": "PUT",
             "headers": [
               {
-                "name": "Authorization",
-                "value": "Bearer",
-                "enabled": true
-              },
-              {
                 "name": "Content-Type",
                 "value": "application/json",
                 "enabled": true
@@ -264,7 +408,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"name\": \"Renamed\",\n  \"description\": \"New description\"\n}",
+              "json": "{\n  \"amount\": 120000,\n  \"description\": \"Updated full replacement\",\n  \"date\": \"2025-07-10\",\n  \"categoryId\": \"831fe2f2-38f0-4ede-aee5-d2c9cdfc4ceb\"\n}",
               "formUrlEncoded": [],
               "multipartForm": [],
               "file": []
@@ -281,19 +425,14 @@
         },
         {
           "type": "http",
-          "name": "Patch category",
-          "filename": "Patch category.bru",
-          "seq": 2,
+          "name": "Patch expense",
+          "filename": "Patch expense.bru",
+          "seq": 4,
           "request": {
-            "url": "http://localhost:8080/api/categories/",
+            "url": "http://localhost:8080/api/expenses/REPLACE_WITH_EXPENSE_ID",
             "method": "PATCH",
             "headers": [
               {
-                "name": "Authorization",
-                "value": "Bearer",
-                "enabled": true
-              },
-              {
                 "name": "Content-Type",
                 "value": "application/json",
                 "enabled": true
@@ -302,7 +441,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"description\": \"Updated only this\"\n}",
+              "json": "{\n  \"description\": \"Only description patched\"\n}",
               "formUrlEncoded": [],
               "multipartForm": [],
               "file": []
@@ -319,19 +458,13 @@
         },
         {
           "type": "http",
-          "name": "Delete category",
-          "filename": "Delete category.bru",
-          "seq": 2,
+          "name": "Delete expense",
+          "filename": "Delete expense.bru",
+          "seq": 6,
           "request": {
-            "url": "http://localhost:8080/api/categories/",
+            "url": "http://localhost:8080/api/expenses/REPLACE_WITH_EXPENSE_ID",
             "method": "DELETE",
-            "headers": [
-              {
-                "name": "Authorization",
-                "value": "Bearer",
-                "enabled": true
-              }
-            ],
+            "headers": [],
             "params": [],
             "body": {
               "mode": "none",
@@ -361,7 +494,7 @@
       "node_modules",
       ".git"
     ],
-    "size": 0,
-    "filesCount": 0
+    "size": 0.0023488998413085938,
+    "filesCount": 11
   }
 }
