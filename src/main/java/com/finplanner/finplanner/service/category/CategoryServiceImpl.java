@@ -72,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void deleteCategory(UUID categoryId, User user) {
-        if(expenseRepository.existsByCategoryId(categoryId)) {
+        if (expenseRepository.existsByCategoryId(categoryId)) {
             throw new CategoryInUseException("Cannot delete category with existing expenses");
         }
         Category category = findAuthorizedCategory(categoryId, user);

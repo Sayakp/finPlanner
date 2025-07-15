@@ -3,30 +3,31 @@ package com.finplanner.finplanner.service.expense;
 import com.finplanner.finplanner.dto.expense.CreateExpenseDto;
 import com.finplanner.finplanner.dto.expense.ExpenseDto;
 import com.finplanner.finplanner.dto.expense.PatchExpenseDto;
-import com.finplanner.finplanner.exception.ResourceNotFoundException;
 import com.finplanner.finplanner.mapper.ExpenseMapper;
 import com.finplanner.finplanner.model.Category;
 import com.finplanner.finplanner.model.Expense;
 import com.finplanner.finplanner.model.User;
 import com.finplanner.finplanner.repository.CategoryRepository;
 import com.finplanner.finplanner.repository.ExpenseRepository;
+import com.finplanner.finplanner.service.common.CategoryBasedEntityService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class ExpenseServiceImpl implements ExpenseService {
+public class ExpenseServiceImpl extends CategoryBasedEntityService<Expense> implements ExpenseService {
+    private final static String ENTITY_NAME = "Expense";
     private final ExpenseRepository expenseRepository;
-    private final CategoryRepository categoryRepository;
     private final ExpenseMapper expenseMapper;
 
     public ExpenseServiceImpl(ExpenseRepository expenseRepository,
                               CategoryRepository categoryRepository,
                               ExpenseMapper expenseMapper) {
+        super(categoryRepository);
         this.expenseRepository = expenseRepository;
-        this.categoryRepository = categoryRepository;
         this.expenseMapper = expenseMapper;
     }
 
@@ -54,7 +55,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public ExpenseDto replaceExpense(UUID expenseId, CreateExpenseDto createExpenseDto, User user) {
-        Expense expenseToReplace = findAuthorizedExpense(expenseId, user);
+        Expense expenseToReplace = findAuthorizedEntity(expenseId, user);
         Category category = resolveAccessibleCategory(createExpenseDto.getCategoryId(), user);
 
         expenseToReplace.setCategory(category);
@@ -69,7 +70,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public ExpenseDto patchExpense(UUID expenseId, PatchExpenseDto patchExpenseDto, User user) {
-        Expense expenseToPatch = findAuthorizedExpense(expenseId, user);
+        Expense expenseToPatch = findAuthorizedEntity(expenseId, user);
 
         if (patchExpenseDto.getAmount() != null) {
             expenseToPatch.setAmount(patchExpenseDto.getAmount());
@@ -90,22 +91,23 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public void deleteExpense(UUID expenseId, User user) {
-        Expense expenseToDelete = findAuthorizedExpense(expenseId, user);
+        Expense expenseToDelete = findAuthorizedEntity(expenseId, user);
         expenseRepository.delete(expenseToDelete);
     }
 
-    private Expense findAuthorizedExpense(UUID expenseId, User user) {
-        return user.isAdmin()
-                ? expenseRepository.findById(expenseId).orElseThrow(
-                () -> new ResourceNotFoundException("Expense not found"))
-                : expenseRepository.findByIdAndUserId(expenseId, user.getId()).orElseThrow(
-                () -> new ResourceNotFoundException("Expense not found or not authorized")
-        );
+    @Override
+    protected Optional<Expense> findByIdForAdmin(UUID entityId) {
+        return expenseRepository.findById(entityId);
     }
 
-    private Category resolveAccessibleCategory(UUID categoryId, User user) {
-        return categoryRepository.findByIdAndUserId(categoryId, user.getId())
-                .or(() -> categoryRepository.findByIdAndUserIsNull(categoryId))
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    @Override
+    protected Optional<Expense> findByIdAndUserId(UUID entityId, UUID userId) {
+        return expenseRepository.findByIdAndUserId(entityId, userId);
     }
+
+    @Override
+    protected String getEntityName() {
+        return ENTITY_NAME;
+    }
+
 }

@@ -12,7 +12,7 @@ import java.util.UUID;
 public class PatchBudgetDto {
     @Size(max = 50, message = "Name must be less than 50 characters")
     private String name;
-    @DecimalMin(value="0.01", message = "Amount must be greater than 0")
+    @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
     private BigDecimal amount;
     private LocalDate startDate;
     private LocalDate endDate;

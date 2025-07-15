@@ -15,7 +15,7 @@ public class CreateBudgetDto {
     @Size(max = 50, message = "Name must be less than 50 characters")
     private String name;
     @NotNull(message = "Amount required")
-    @DecimalMin(value="0.01", message = "Amount must be greater than 0")
+    @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
     private BigDecimal amount;
     @NotNull(message = "Start date required")
     private LocalDate startDate;
