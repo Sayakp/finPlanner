@@ -6,10 +6,12 @@ import com.finplanner.finplanner.dto.budget.PatchBudgetDto;
 import com.finplanner.finplanner.dto.budget.UpdateBudgetDto;
 import com.finplanner.finplanner.mapper.BudgetMapper;
 import com.finplanner.finplanner.model.Budget;
+import com.finplanner.finplanner.model.Category;
 import com.finplanner.finplanner.model.User;
 import com.finplanner.finplanner.repository.BudgetRepository;
 import com.finplanner.finplanner.repository.CategoryRepository;
 import com.finplanner.finplanner.service.common.CategoryBasedEntityService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,17 +47,34 @@ public class BudgetServiceImpl extends CategoryBasedEntityService<Budget> implem
     @Override
     public BudgetDto createBudget(CreateBudgetDto budgetDto, User user) {
         Budget budget = budgetMapper.toBudget(budgetDto, user);
-        return null;
+        Category category = resolveAccessibleCategory(budgetDto.getCategoryId(), user);
+        budget.setCategory(category);
+        budgetRepository.save(budget);
+        return budgetMapper.toBudgetDto(budget);
     }
 
     @Override
+    @Transactional
     public BudgetDto replaceBudget(UUID budgetId, UpdateBudgetDto budgetDto, User user) {
-        return null;
+        Budget budgetToReplace = findAuthorizedEntity(budgetId, user);
+        budgetMapper.updateBudgetFromUpdateDto(budgetDto, budgetToReplace);
+        Category category = resolveAccessibleCategory(budgetDto.getCategoryId(), user);
+        budgetToReplace.setCategory(category);
+        return budgetMapper.toBudgetDto(budgetRepository.save(budgetToReplace));
     }
 
     @Override
+    @Transactional
     public BudgetDto patchBudget(UUID budgetId, PatchBudgetDto budgetDto, User user) {
-        return null;
+        Budget budgetToPatch = findAuthorizedEntity(budgetId, user);
+        budgetMapper.updateBudgetFromPatchDto(budgetDto, budgetToPatch);
+
+        if(budgetDto.getCategoryId() != null) {
+            Category category = resolveAccessibleCategory(budgetDto.getCategoryId(), user);
+            budgetToPatch.setCategory(category);
+        }
+
+        return budgetMapper.toBudgetDto(budgetRepository.save(budgetToPatch));
     }
 
     @Override
