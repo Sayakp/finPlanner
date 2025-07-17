@@ -69,7 +69,7 @@ public class BudgetServiceImpl extends CategoryBasedEntityService<Budget> implem
         Budget budgetToPatch = findAuthorizedEntity(budgetId, user);
         budgetMapper.updateBudgetFromPatchDto(budgetDto, budgetToPatch);
 
-        if(budgetDto.getCategoryId() != null) {
+        if (budgetDto.getCategoryId() != null) {
             Category category = resolveAccessibleCategory(budgetDto.getCategoryId(), user);
             budgetToPatch.setCategory(category);
         }
