@@ -56,8 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryDto replaceCategory(UUID categoryId, UpdateCategoryDto categoryDto, User user) {
-        Category categoryToReplace = categoryRepository.findByIdAndUserId(categoryId, user.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found or not accessible"));
+        Category categoryToReplace = findAuthorizedCategory(categoryId, user);
         categoryMapper.updateCategoryFromUpdateDto(categoryDto, categoryToReplace);
         return categoryMapper.toCategoryDto(categoryToReplace);
     }
@@ -65,8 +64,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryDto patchCategory(UUID categoryId, PatchCategoryDto categoryDto, User user) {
-        Category categoryToPatch = categoryRepository.findByIdAndUserId(categoryId, user.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found or not accessible"));
+        Category categoryToPatch = findAuthorizedCategory(categoryId, user);
         categoryMapper.updateCategoryFromPatchDto(categoryDto, categoryToPatch);
         return categoryMapper.toCategoryDto(categoryToPatch);
     }
@@ -74,11 +72,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void deleteCategory(UUID categoryId, User user) {
-        if(expenseRepository.existsByCategoryId(categoryId)) {
+        if (expenseRepository.existsByCategoryId(categoryId)) {
             throw new CategoryInUseException("Cannot delete category with existing expenses");
         }
-        Category category = categoryRepository.findByIdAndUserId(categoryId, user.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found or not accessible"));
+        Category category = findAuthorizedCategory(categoryId, user);
         categoryRepository.delete(category);
+    }
+
+    private Category findAuthorizedCategory(UUID categoryId, User user) {
+        return user.isAdmin()
+                ? categoryRepository.findById(categoryId).orElseThrow(
+                () -> new ResourceNotFoundException("Category not found"))
+                : categoryRepository.findByIdAndUserId(categoryId, user.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Category not found or not authorized"));
     }
 }
