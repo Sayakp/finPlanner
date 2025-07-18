@@ -17,7 +17,7 @@ public class RegistrationValidationException extends RuntimeException {
         EMAIL_IN_USE("Email is already in use"),
         ROLE_NOT_FOUND("Role not found");
 
-        private String message;
+        private final String message;
 
         RegistrationErrorCode(String message) {
             this.message = message;
